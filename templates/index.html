@@ -1,0 +1,27 @@
+{% extends 'bais.html' %}
+
+{% block head %}
+    <title> todo page</title>
+{% endblock %}
+
+{% block body %}
+<h3 id="aa"> To do list</h3>
+<table id="table" >
+    <tr>
+        <th>Task</th>
+        <th>Date of made</th>
+        <th>Action</th> 
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>  {{task.content}}         </td>
+        <td>        {{task.date_created.strftime('%Y-%m-%d %H:%M') }}    </td>
+        <td>    <a href="/delete/{{ task.id }}" class="action-btn">Delete</a><br> <a href="/update/{{ task.id }}" class="action-btn">Update</a> </td>
+    </tr>
+    {% endfor %}
+</table>
+<form action="/" method="POST">
+    <input type="text" name="task" placeholder="enter your task" required id="task">
+    <input type="submit" value="add task">
+
+{% endblock %}

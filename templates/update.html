@@ -1,0 +1,14 @@
+{% extends 'bais.html' %}
+
+{% block head %}
+    <title> todo page</title>
+{% endblock %}
+
+{% block body %}
+<h3 id="aa"> Update Task</h3>
+
+<form action="/update/{{task.id}}" method="POST">
+    <input type="text" name="task" placeholder="{{task.content}}" required id="task">
+    <input type="submit" value="submit">
+
+{% endblock %}

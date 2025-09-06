@@ -1,0 +1,151 @@
+/* Body styling */
+body {
+    font-family: 'Digital-7', 'Orbitron', 'VT323', monospace, sans-serif;
+    font-size: 18px;
+    background-color: #1e1e1e; /* Dark background for contrast */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+#aa {
+    text-align: center;
+    font-size: 36px;
+    font-family: 'Digital-7', monospace;
+    margin-top: 30px;
+    color: violet;
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+
+/* Table styling */
+table {
+    font-family: 'Digital-7', monospace;
+    font-size: 20px;
+    text-align: center;
+    border-collapse: collapse;
+    width: 80%;
+    margin: 30px auto; /* Center the table horizontally */
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table, th, td {
+    border: 2px solid #444;
+}
+
+th {
+    background-color: #444;
+    color: #ff69b4;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+}
+
+/* Form styling */
+form {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+/* Text input box */
+form input[type="text"] {
+    font-size: 22px;
+    padding: 8px 12px;
+    border: 2px solid #444;
+    border-radius: 5px;
+    width: 300px;
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+/* Buttons */
+form input[type="submit"], .action-btn {
+    font-size: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 3px;
+    cursor: pointer;
+    font-family: 'Digital-7', monospace;
+    transition: 0.3s;
+}
+
+/* Submit button */
+form input[type="submit"] {
+    background-color: violet;
+    color: #fff;
+}
+
+form input[type="submit"]:hover {
+    background-color: #ff69b4;
+}
+
+/* Action buttons inside table */
+.action-btn {
+    background-color: #444;
+    color: #fff;
+    text-decoration: none;
+     margin: 5px;  /* add space between buttons */
+    display: inline-block;  /* ensures margin works properly */
+}
+
+.action-btn:hover {
+    background-color: #ff69b4;
+}
+
+/* Optional: alternating row colors */
+table tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+table tr:nth-child(odd) {
+    background-color: #333;
+}
+
+
+/* Buttons */
+form input[type="submit"], .action-btn {
+    font-size: 20px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    margin: 3px;
+    cursor: pointer;
+    font-family: 'Digital-7', monospace;
+    transition: 0.3s;
+    color: #000;
+}
+
+/* Submit button */
+form input[type="submit"] {
+    background-color: violet;
+    color: #fff;
+}
+
+form input[type="submit"]:hover {
+    background-color: #ff69b4;
+}
+
+/* Action buttons inside table */
+.action-btn {
+    background-color: #444;
+    color: #fff;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background-color: #ff69b4;
+}
+
+/* Optional: alternating row colors */
+table tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+table tr:nth-child(odd) {
+    background-color: #333;
+}
