@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h2 id="aa">Signup</h2>
+
+<form method="POST">
+    <input type="text" name="username" placeholder="Username" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="password" name="password" placeholder="Password" required><br><br>
+    <input type="submit" value="Signup"> <!-- input matches #bb CSS -->
+</form>
+
+<p style="text-align:center; margin-top:10px;">Already have an account?</p>
+<a href="{{ url_for('login') }}">
+    <input type="button" value="login here" class="action-btn">
+</a>
+
+{% endblock %}

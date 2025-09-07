@@ -1,12 +1,20 @@
-{% extends 'bais.html' %}
+{% extends 'base.html' %}
 
 {% block head %}
     <title> todo page</title>
 {% endblock %}
 
 {% block body %}
+<div style="text-align: right; margin-bottom: 20px;">
+        <a href="{{ url_for('logout') }}">
+            <button class="action-btn" id="lol">Logout</button>
+        </a>
+    </div>
+    <br>
+
+
 <h3 id="aa"> To do list</h3>
-<table id="table" >
+    <table id="table" >
     <tr>
         <th>Task</th>
         <th>Date of made</th>
@@ -22,6 +30,11 @@
 </table>
 <form action="/" method="POST">
     <input type="text" name="task" placeholder="enter your task" required id="task">
-    <input type="submit" value="add task">
+    <input type="submit" value="Add task">
+
+
+
+</form>
+
 
 {% endblock %}

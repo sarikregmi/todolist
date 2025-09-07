@@ -1,14 +1,18 @@
-/* Body styling */
+/* =========================
+   BODY STYLING
+========================= */
 body {
     font-family: 'Digital-7', 'Orbitron', 'VT323', monospace, sans-serif;
     font-size: 18px;
-    background-color: #1e1e1e; /* Dark background for contrast */
+    background-color: #1e1e1e; /* Dark background */
     color: #fff;
     margin: 0;
     padding: 0;
 }
 
-/* Header */
+/* =========================
+   HEADERS
+========================= */
 #aa {
     text-align: center;
     font-size: 36px;
@@ -19,7 +23,9 @@ body {
     text-decoration-color: red;
 }
 
-/* Table styling */
+/* =========================
+   TABLE STYLING
+========================= */
 table {
     font-family: 'Digital-7', monospace;
     font-size: 20px;
@@ -46,15 +52,27 @@ td {
     padding: 10px;
 }
 
-/* Form styling */
+/* Alternating row colors */
+table tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+table tr:nth-child(odd) {
+    background-color: #333;
+}
+
+/* =========================
+   FORM STYLING
+========================= */
 form {
     text-align: center;
     margin-top: 20px;
     font-size: 20px;
 }
 
-/* Text input box */
-form input[type="text"] {
+/* Input fields */
+form input[type="text"], 
+form input[type="password"], 
+form input[type="email"] {
     font-size: 22px;
     padding: 8px 12px;
     border: 2px solid #444;
@@ -62,90 +80,63 @@ form input[type="text"] {
     width: 300px;
     background-color: #1e1e1e;
     color: #fff;
+    margin-bottom: 10px;
 }
 
-/* Buttons */
-form input[type="submit"], .action-btn {
+/* =========================
+   BUTTON STYLING (#bb)
+========================= */
+form input[type="submit"], 
+.action-btn,
+button.action-btn {
     font-size: 20px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    margin: 3px;
+    margin: 10px auto; /* center horizontally */
     cursor: pointer;
     font-family: 'Digital-7', monospace;
     transition: 0.3s;
+    display: block;       /* center the button */
+    text-align: center;
+    color: black;
+    background-color: gray; /* #bb style */
 }
 
-/* Submit button */
-form input[type="submit"] {
-    background-color: violet;
-    color: #fff;
+/* Hover effect */
+form input[type="submit"]:hover,
+.action-btn:hover,
+button.action-btn:hover {
+    background-color: #555; /* slightly darker on hover */
 }
 
-form input[type="submit"]:hover {
-    background-color: #ff69b4;
-}
-
-/* Action buttons inside table */
-.action-btn {
-    background-color: #444;
-    color: #fff;
+/* Remove underline from buttons inside links */
+a {
     text-decoration: none;
-     margin: 5px;  /* add space between buttons */
-    display: inline-block;  /* ensures margin works properly */
 }
 
-.action-btn:hover {
-    background-color: #ff69b4;
+a .action-btn {
+    display: block;
+    margin: 10px auto;
+    text-align: center;
 }
 
-/* Optional: alternating row colors */
-table tr:nth-child(even) {
-    background-color: #2a2a2a;
-}
-table tr:nth-child(odd) {
-    background-color: #333;
-}
-
-
-/* Buttons */
-form input[type="submit"], .action-btn {
+/* =========================
+   MISC
+========================= */
+#bb {
+    text-align: center;
     font-size: 20px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    margin: 3px;
-    cursor: pointer;
-    font-family: 'Digital-7', monospace;
-    transition: 0.3s;
-    color: #000;
+    margin-top: 20px;
+    color: black;
+    background-color: gray;
 }
+#lol {
 
-/* Submit button */
-form input[type="submit"] {
-    background-color: violet;
-    color: #fff;
-}
+   position: relative;
+   float:top;
+   
+    margin-right: 5%;
+    padding: 5px auto;
 
-form input[type="submit"]:hover {
-    background-color: #ff69b4;
-}
-
-/* Action buttons inside table */
-.action-btn {
-    background-color: #444;
-    color: #fff;
-    text-decoration: none;
-}
-
-.action-btn:hover {
-    background-color: #ff69b4;
-}
-
-/* Optional: alternating row colors */
-table tr:nth-child(even) {
-    background-color: #2a2a2a;
-}
-table tr:nth-child(odd) {
-    background-color: #333;
 }
