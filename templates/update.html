@@ -1,14 +1,11 @@
-{% extends 'base.html' %}
-
-{% block head %}
-    <title> todo page</title>
-{% endblock %}
-
+{% extends "base.html" %}
 {% block body %}
-<h3 id="aa"> Update Task</h3>
-
-<form action="/update/{{task.id}}" method="POST">
-    <input type="text" name="task" placeholder="{{task.content}}" required id="task">
-    <input type="submit" value="submit">
-
+<h2 id="aa">Update Task</h2>
+<form method="POST">
+    <input type="text" name="task" value="{{ task.content }}" required>
+    <button type="submit" class="action-btn">Update</button>
+</form>
+{% endblock %}
+{% block head %}
+    <title>Update Task</title>
 {% endblock %}

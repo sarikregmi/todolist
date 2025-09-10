@@ -1,40 +1,37 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title> todo page</title>
+<title>Todo Page</title>
 {% endblock %}
 
 {% block body %}
-<div style="text-align: right; margin-bottom: 20px;">
-        <a href="{{ url_for('logout') }}">
-            <button class="action-btn" id="lol">Logout</button>
-        </a>
-    </div>
-    <br>
+<h3 id="aa">To Do List</h3>
 
 
-<h3 id="aa"> To do list</h3>
-    <table id="table" >
+    <a href="{{ url_for('logout') }}" id="lol">
+        <button class="action-btn logout-btn" id="lol">Logout</button>
+    </a>
+
+<table id="table">
     <tr>
         <th>Task</th>
-        <th>Date of made</th>
+        <th>Date Created</th>
         <th>Action</th> 
     </tr>
     {% for task in tasks %}
     <tr>
-        <td>  {{task.content}}         </td>
-        <td>        {{task.date_created.strftime('%Y-%m-%d %H:%M') }}    </td>
-        <td>    <a href="/delete/{{ task.id }}" class="action-btn">Delete</a><br> <a href="/update/{{ task.id }}" class="action-btn">Update</a> </td>
+        <td>{{ task.content }}</td>
+        <td>{{ task.date_created.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+            <a href="/delete/{{ task.id }}" class="action-btn">Delete</a>
+            <a href="/update/{{ task.id }}" class="action-btn">Update</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
-<form action="/" method="POST">
-    <input type="text" name="task" placeholder="enter your task" required id="task">
-    <input type="submit" value="Add task">
 
-
-
+<form action="{{ url_for('add_task') }}" method="POST">
+    <input type="text" name="task" placeholder="Enter your task" required id="task">
+    <input type="submit" value="Add Task" class="action-btn">
 </form>
-
-
 {% endblock %}

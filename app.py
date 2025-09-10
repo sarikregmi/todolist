@@ -1,121 +1,116 @@
-from flask import Flask, render_template, url_for, redirect, request, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-app.secret_key = "your_secret_key"
+app.secret_key = "supersecretkey"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
-
-# -------------------
-# MODELS
-# -------------------
-class Register(db.Model):
+# ------------------ MODELS ------------------
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    tasks = db.relationship('Todo', backref='user', lazy=True)
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
-    complete = db.Column(db.Integer, default=0)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-
-# -------------------
-# USER AUTH ROUTES
-# -------------------
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-
-        if Register.query.filter_by(username=username).first():
-            flash("Username already exists!")
-            return redirect(url_for('signup'))
-
-        new_user = Register(username=username, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash("Signup successful! Please login.")
+# ------------------ ROUTES ------------------
+@app.route('/')
+def home():
+    if 'username' not in session:
         return redirect(url_for('login'))
 
-    return render_template('signup.html')
+    current_user = User.query.filter_by(username=session['username']).first()
+    tasks = Todo.query.filter_by(user_id=current_user.id).all()
+    return render_template('main.html', tasks=tasks)
 
+@app.route('/add', methods=['POST'])
+def add_task():
+    if 'username' not in session:
+        return redirect(url_for('login'))
 
+    content = request.form.get('task')
+    if content:
+        current_user = User.query.filter_by(username=session['username']).first()
+        new_task = Todo(content=content, user_id=current_user.id)
+        db.session.add(new_task)
+        db.session.commit()
+    return redirect(url_for('home'))
+
+@app.route('/delete/<int:id>')
+def delete_task(id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    task = Todo.query.get_or_404(id)
+    if task.user.username != session['username']:
+        return "Unauthorized", 403
+
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for('home'))
+
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update_task(id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    task = Todo.query.get_or_404(id)
+    if task.user.username != session['username']:
+        return "Unauthorized", 403
+
+    if request.method == 'POST':
+        task.content = request.form['task']
+        db.session.commit()
+        return redirect(url_for('home'))
+
+    return render_template('update.html', task=task)
+
+# ------------------ AUTH ------------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        user = User.query.filter_by(username=username).first()
 
-        user = Register.query.filter_by(username=username, password=password).first()
-        if user:
-            session['user_id'] = user.id
+        if user and check_password_hash(user.password, password):
             session['username'] = user.username
-            flash("Login successful!")
-            return redirect(url_for('main'))
-        else:
-            flash("Invalid username or password.")
-
+            return redirect(url_for('home'))
+        return "Invalid credentials"
     return render_template('login.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = generate_password_hash(request.form['password'])
+
+        if User.query.filter_by(username=username).first():
+            return "Username already exists!"
+
+        new_user = User(username=username, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('signup.html')
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    flash("You have been logged out.")
+    session.pop('username', None)
     return redirect(url_for('login'))
 
-
-# -------------------
-# TODO ROUTES (protected)
-# -------------------
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/main', methods=['GET', 'POST'])
-def main():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
-        task_content = request.form['task']
-        new_task = Todo(content=task_content)
-        db.session.add(new_task)
-        db.session.commit()
-        return redirect(url_for('main'))
-
-    tasks = Todo.query.order_by(Todo.date_created).all()
-    return render_template('main.html', tasks=tasks)
-
-
-@app.route('/delete/<int:id>')
-def delete(id):
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    task_to_delete = Todo.query.get_or_404(id)
-    db.session.delete(task_to_delete)
-    db.session.commit()
-    return redirect(url_for('main'))
-
-
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
-def update(id):
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
-    task = Todo.query.get_or_404(id)
-    if request.method == 'POST':
-        task.content = request.form['task']
-        db.session.commit()
-        return redirect(url_for('main'))
-    return render_template('update.html', task=task)
-
-
+# ------------------ MAIN ------------------
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
